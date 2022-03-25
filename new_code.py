@@ -6,7 +6,7 @@ Created on Sat Mar 19 11:50:59 2022
 """
 
 import numpy as np
-import math 
+import math
 import matplotlib.pyplot as plt
 from scipy import integrate
 
@@ -27,24 +27,28 @@ def ode(t, r):
     
     return r1_dot, r2_dot, p1_dot, p2_dot, q1_dot, q2_dot
 
-sol = integrate.solve_ivp(ode, [0, 1814400], [np.random.randint(0,1000), np.random.randint(0,1000), np.random.randint(0,1000), np.random.randint(0,1000), np.random.randint(0,1000), np.random.randint(0,1000)], t_eval = np.linspace(0, 1814400, 10000))
+sol = integrate.solve_ivp(ode, [0, 1814400], [1.515*10**11, 5, 0.6, 4, 0, 2], t_eval = np.linspace(0, 1814400, 10000))
 
-print(sol)
-
-x_values_list = []
-y_values_list = []
-z_values_list = []
+x_array = []
+y_array = []
+z_array = []
 
 for i in range(0, len(sol.y[0])):
-    x_value = sol.y[0, i] * math.cos(sol.y[2, i]) * math.cos(sol.y[4, i])
-    x_values_list.append(x_value)
+    x = sol.y[0][i] * math.cos(sol.y[4][i]) * math.cos(sol.y[2][i])
+    x_array.append(x)
     
-    y_value = sol.y[0, i] * math.cos(sol.y[2, i]) * math.sin(sol.y[4, i])
-    y_values_list.append(y_value)
+    y = sol.y[0][i] * math.cos(sol.y[4][i]) * math.sin(sol.y[2][i])
+    y_array.append(y)
     
-    z_value = sol.y[0, i] * math.sin(sol.y[2, i])
-    z_values_list.append(z_value)
-    
+    z = sol.y[0][i] * math.sin(sol.y[4][i])
+    z_array.append(z)
+
+fig = plt.figure()
+ax = plt.axes(projection = '3d')
+ax.plot(x_array, y_array, z_array)
+ax.set_xlabel('x')
+ax.set_ylabel('y')
+ax.set_zlabel('z')
 
 
 fig = plt.figure()
