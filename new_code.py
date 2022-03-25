@@ -18,16 +18,16 @@ def ode(t, r):
     
     r1, r2, p1, p2, q1, q2 = r
     
-    r_position = r2
-    r_velocity = r1 * ((p2**2) + ((math.sin(p1))**2 * (q2**2))) + ( G * (m1 - m2)/(r1**2) )  
-    p_position = p2
-    p_velocity = ( (math.sin(p1)) * (math.cos(p1)) * (q2**2) ) - ( (2 * r2 * p2)/r1 )
-    q_position = q2
-    q_velocity = - ( (( 2 * r2 * q2 )/r1) + ( 2 * ( (math.cos(p1))/(math.sin(p1)) ) * p2 * q2 ) )
+    r1_dot = r2
+    r2_dot = r1 * ((p2**2) + ((math.sin(p1))**2 * (q2**2))) + ( G * (m1 - m2)/(r1**2) )  
+    p1_dot = p2
+    p2_dot = ( (math.sin(p1)) * (math.cos(p1)) * (q2**2) ) - ( (2 * r2 * p2)/r1 )
+    q1_dot = q2
+    q2_dot = - ( (( 2 * r2 * q2 )/r1) + ( 2 * ( (math.cos(p1))/(math.sin(p1)) ) * p2 * q2 ) )
     
-    return r_position, r_velocity, p_position, p_velocity, q_position, q_velocity
+    return r1_dot, r2_dot, p1_dot, p2_dot, q1_dot, q2_dot
 
-sol = integrate.solve_ivp(ode, [0, 1814400], [1500000, 1000, 0.9, 1000, 0.7, 1000], t_eval = np.linspace(0, 1814400, 10000))
+sol = integrate.solve_ivp(ode, [0, 1814400], [np.random.randint(0,1000), np.random.randint(0,1000), np.random.randint(0,1000), np.random.randint(0,1000), np.random.randint(0,1000), np.random.randint(0,1000)], t_eval = np.linspace(0, 1814400, 10000))
 
 print(sol.y)
 
