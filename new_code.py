@@ -6,7 +6,7 @@ Created on Sat Mar 19 11:50:59 2022
 """
 
 import numpy as np
-import math
+import math 
 import matplotlib.pyplot as plt
 from scipy import integrate
 
@@ -29,11 +29,26 @@ def ode(t, r):
 
 sol = integrate.solve_ivp(ode, [0, 1814400], [np.random.randint(0,1000), np.random.randint(0,1000), np.random.randint(0,1000), np.random.randint(0,1000), np.random.randint(0,1000), np.random.randint(0,1000)], t_eval = np.linspace(0, 1814400, 10000))
 
-print(sol.y)
+print(sol)
+
+x_values_list = []
+y_values_list = []
+z_values_list = []
+
+for i in range(0, len(sol.y[0])):
+    x_value = sol.y[0, i] * math.cos(sol.y[2, i]) * math.cos(sol.y[4, i])
+    x_values_list.append(x_value)
+    
+    y_value = sol.y[0, i] * math.cos(sol.y[2, i]) * math.sin(sol.y[4, i])
+    y_values_list.append(y_value)
+    
+    z_value = sol.y[0, i] * math.sin(sol.y[2, i])
+    z_values_list.append(z_value)
+    
 
 
 fig = plt.figure()
 ax = plt.axes(projection = '3d')
-ax.plot(sol.y[0,:],
-        sol.y[2,:],
-        sol.y[4,:])
+ax.plot(x_values_list,
+        y_values_list,
+        z_values_list)
