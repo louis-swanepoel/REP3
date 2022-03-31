@@ -22,11 +22,18 @@ def ode(t, r):
     q2_dot = - ( (( 2 * r2 * q2 )/r1) + ( 2 * ( (math.cos(p1))/(math.sin(p1)) ) * p2 * q2 ) )
     
     return r1_dot, r2_dot, p1_dot, p2_dot, q1_dot, q2_dot
-
+time_start_orbit = 1000000
+time_end_orbit = 100000000
+r1i= 151101100000
+r2i= 320
+p1i= (0.00039708/180)*math.pi
+p2i= 320/600000000
+q1i=(0.00039708/180)*math.pi
+q2i= 320/600000000
 #sol = integrate.solve_ivp(ode,[0,1814400], [151101100,185],[(3.9708)*10^-3,185.32],[(3.9708*10^-6), 185], t_eval = np.linspace(0, 1814400, 10000))
-sol = integrate.solve_ivp(ode,[0,1000000], [151101100,185,(0.00039708),1,(0.00039708), 1], t_eval = np.linspace(0, 1000000, 1000))
+sol = integrate.solve_ivp(ode,[time_start_orbit,time_end_orbit], [r1i,r2i,p1i,p2i,q1i, q2i], t_eval = (time_start_orbit, time_end_orbit, 1000))
 
-print(sol)
+
 
 x_values_list = []
 y_values_list = []
@@ -45,38 +52,44 @@ for i in range(0, len(sol.y[0])):
 print(z_values_list)
 print(y_values_list)
 print(z_values_list)
-fig = plt.figure(figsize=(4,4))
+
 
 # method 2
 
-# ax = plt.axes(projection = '3d')
-# plot = ax.plot(x_values_list,
-#         y_values_list,
-#         z_values_list)
+ax1 = plt.axes(projection = '3d')
+ax1.plot(x_values_list,
+        y_values_list,
+        z_values_list)
 
 # method 2
 
-# ax = plt.axes(projection = '3d')
-# plot = ax.plot(sol.y[0],
-#         sol.y[1],
-#         sol.y[2])
+# ax2 = plt.axes(projection = '3d')
+# ax2.plot(sol.y[0],
+#         sol.y[2],
+#         sol.y[4])
+# plt.show(ax2)
 
-theta, phi = sol.y[2], sol.y[4]
-THETA, PHI = np.meshgrid(theta, phi)
-R = sol.y[0]
-X = R * np.sin(PHI) * np.cos(THETA)
-Y = R * np.sin(PHI) * np.sin(THETA)
-Z = R * np.cos(PHI)
-fig = plt.figure()
-ax = fig.add_subplot(1,1,1, projection='3d')
-plot = ax.plot_surface(
-    X, Y, Z, rstride=1, cstride=1, cmap=plt.get_cmap('jet'),
-    linewidth=0, antialiased=False, alpha=0.5)
+# method for individual plots
 
-plt.show()
-ax.set_xlabel('')
-ax.set_ylable()
-ax.set_zlabel()
+ax3 = plt.axes()
+ax3.plot((time_start_orbit, time_end_orbit, 100),sol.y[0])
+
+# theta, phi = sol.y[2], sol.y[4]
+# THETA, PHI = np.meshgrid(theta, phi)
+# R = sol.y[0]
+# X = R * np.sin(PHI) * np.cos(THETA)
+# Y = R * np.sin(PHI) * np.sin(THETA)
+# Z = R * np.cos(PHI)
+# fig = plt.figure()
+# ax = fig.add_subplot(1,1,1, projection='3d')
+# plot = ax.plot()
+# X, Y, Z, rstride=1, cstride=1, cmap=plt.get_cmap('jet'),
+# linewidth=0, antialiased=False, alpha=0.5)
+
+# plt.show()
+# ax.set_xlabel('')
+# ax.set_ylable()
+# ax.set_zlabel()
 
 
 # Scatter Graph
@@ -85,19 +98,19 @@ ax.set_zlabel()
 #         y_values_list,
 #         z_values_list)
 
-plt.show(plot)
+plt.show()
 # plt.savefig('plot.png')
 
 
 #Calculate the kinetic energy
-velocity_squared = (sol.y[1, -1] ** 2) + (sol.y[3, -1] ** 2) + (sol.y[5, -1] ** 2)
-kinetic_evergy = 0.5 * mass_of_jwt * velocity_squared
+# velocity_squared = (sol.y[1, -1] ** 2) + (sol.y[3, -1] ** 2) + (sol.y[5, -1] ** 2)
+# kinetic_evergy = 0.5 * mass_of_jwt * velocity_squared
 
-# print(kinetic_evergy)
+# # print(kinetic_evergy)
 
 
-#Calculate the potential energy
-distance_from_origin = math.sqrt(((x_values_list[-1] - x_values_list[0]) ** 2) + ((y_values_list[-1] - y_values_list[0]) ** 2) + ((z_values_list[-1] - z_values_list[0]) ** 2))
+# #Calculate the potential energy
+# distance_from_origin = math.sqrt(((x_values_list[-1] - x_values_list[0]) ** 2) + ((y_values_list[-1] - y_values_list[0]) ** 2) + ((z_values_list[-1] - z_values_list[0]) ** 2))
 
 # print(distance_from_origin)
 
