@@ -6,14 +6,14 @@ from scipy import integrate
 
 mass_of_jwt = 6000
 time_start_orbit = 0
-time_end_orbit = 1814400
+time_end_orbit = 10000
 
 r1i= 151500000000
-r2i= 0
-p1i= (0.00039708/180)*math.pi
-p2i= 0.000000000009
-q1i=(0.00039708/180)*math.pi
-q2i= 0.00000009
+r2i= 0.03
+p1i= 1*10^-10
+p2i= 0.00000000000001
+q1i= 1*10^-10
+q2i= 0.00000000000001
 
 
 
@@ -43,7 +43,7 @@ def integration(time_end_orbit, r1i, r2i, p1i, p2i, q1i, q2i):
         
         return r1_dot, r2_dot, p1_dot, p2_dot, q1_dot, q2_dot
     
-    number_of_integrations = 10
+    number_of_integrations = 320
     
     sol = integrate.solve_ivp(ode,[0, time_end_orbit], [r1i,r2i,p1i,p2i,q1i,q2i], t_eval = np.linspace(0, time_end_orbit, number_of_integrations))    
 
@@ -64,22 +64,63 @@ def change_to_cartesian(sol):
         
         z_value = sol.y[0, i] * math.sin(sol.y[2, i])
         z_values_list.append(z_value)
-
-
-
-time_in_a_day = 86400
-
-r = []
-theta = []
-phi = []
-
-for time_end_orbit in range(1,time_end_orbit,time_in_a_day):
+    return  x_values_list , y_values_list , z_values_list
+def measurevariable(variable,final_value):
     
-    sol = integration(time_end_orbit,r1i,r2i,p1i,p2i,q1i, q2i)
-    print(sol.y[0])
-
-graph_r_against_t = plt.axes()
-graph_r_against_t.plot()
+    
+    time_span = range(0,final_value)
+    
+    r = []
+    theta = []
+    phi = []
+    
+    for variable in range(0,final_value):
+        
+        sol = integration(time_end_orbit,r1i,r2i,p1i,p2i,q1i, q2i)
+        r_final = sol.y[0][9]
+        theta_final = sol.y[2][9]
+        phi_final = sol.y[4][9]
+        
+        r.append(r_final)
+        theta.append(theta_final)
+        phi.append(phi_final)
+        
+    
+    
+    
+    fig , graph_variable_against_t = plt.subplots(3)
+    
+    graph_variable_against_t[0] = plt.axes()
+    graph_variable_against_t[1] = plt.axes()
+    graph_variable_against_t[2] = plt.axes()
+    
+    graph_variable_against_t[0].plot(r, time_span)    
+    graph_variable_against_t[1].plot(theta, time_span)    
+    graph_variable_against_t[2].plot(phi, time_span)
+    
+    
+  
+    ###### Optimal velocites for entry
+    
+# measurevariable(r2i, 320)
+    
+    ###### Optimal positions for entry
+for p2i in []:
+    
+    sol = integration(time_end_orbit, r1i, r2i, p1i, p2i, q1i, q2i)
+    
+    graph_of_path_spherical = plt.figure('graph_of_path_spherical')
+    graph_of_path_spherical = plt.axes(projection = '3d')
+    graph_of_path_spherical.plot( sol.y[2], sol.y[0],sol.y[4])
+    
+    x_values_list , y_values_list , z_values_list = change_to_cartesian(sol)
+    
+    # graph_of_path_cartesian = plt.figure('graph_of_path_cartesian')
+    # graph_of_path_cartesian = plt.axes(projection = '3d')
+    # graph_of_path_cartesian.plot( y_values_list, x_values_list,z_values_list)
+    plt.show()
+# graph_r_against_t = plt.axes()
+# graph_r_against_t.plot(r_final, np.linspace(0,320))
 
 
 
