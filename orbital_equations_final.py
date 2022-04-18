@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """
 Spyder Editor
-
 This is a temporary script file.
 """
 import numpy as np
@@ -98,7 +97,8 @@ def integration(time_end_orbit, r1i, r2i, p1i, p2i, q1i, q2i):
     
     number_of_integrations = 400
     
-    sol = integrate.solve_ivp(ode,[0, time_end_orbit], [r1i,r2i,p1i,p2i,q1i,q2i], t_eval = np.linspace(0, time_end_orbit, number_of_integrations))    
+    sol = integrate.solve_ivp(ode,[0, time_end_orbit], [r1i,r2i,p1i,p2i,q1i,q2i], t_eval = np.linspace(0, 
+        time_end_orbit, number_of_integrations))    
 
     return sol 
 
@@ -141,9 +141,6 @@ def graph(orbit):
     ax2.set_xlabel("Theta (Rad)")
     ax2.set_ylabel("r (metres)")
     ax2.set_zlabel("Phi (Rad)")
-    ax2.set_ylim(3*10**11,6*10**11)
-    ax2.set_xlim(-4.64*10**-5,-4.61*10**-5)
-    # ax2.set_zlim(-3.59*10**-6,-3.605*10**-6)
     ax2.plot(sol.y[2],
             sol.y[0],
             sol.y[4])
@@ -171,5 +168,4 @@ delta_vi,U = deltaV(orbit3())
 graph(orbit1())
 print("delta v for single manouvre:" , delta_vi)
 print('U:', U)
-
 
